@@ -1,6 +1,6 @@
 package com.debicki.mdbpreview.di
 
-import com.debicki.mdbpreview.GitHubService
+import com.debicki.mdbpreview.OMDBService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,16 +12,15 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
     @Singleton
     @Provides
     fun provideRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl("https://jsonplaceholder.typicode.com/")
+        .baseUrl("https://www.omdbapi.com/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): GitHubService =
-        retrofit.create(GitHubService::class.java)
+    fun provideApiService(retrofit: Retrofit): OMDBService =
+        retrofit.create(OMDBService::class.java)
 }

@@ -14,16 +14,16 @@ sealed class State {
 }
 
 @HiltViewModel
-class FirstViewModel @Inject constructor(private val commentRepository: CommentRepository) : ViewModel() {
+class FirstViewModel @Inject constructor(private val movieRepository: MovieRepository) : ViewModel() {
     private val _viewState = MutableLiveData<State>()
     val viewState: LiveData<State> = _viewState
 
-    fun fetchComments() {
+    fun fetch() {
         viewModelScope.launch {
             _viewState.postValue(State.Init)
-            val comments = commentRepository.fetchComments()
+            val data = movieRepository.fetch()
 
-            _viewState.postValue(State.Fetched(comments.size))
+            _viewState.postValue(State.Fetched(data.totalResults))
         }
     }
 

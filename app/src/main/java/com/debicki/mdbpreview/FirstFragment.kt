@@ -29,6 +29,6 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
             }
         }
 
-        viewModel.fetchComments()
+        viewModel.fetch()
     }
 }
