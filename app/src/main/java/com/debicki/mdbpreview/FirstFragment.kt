@@ -24,10 +24,11 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
 
         viewModel.viewState.observe(viewLifecycleOwner) {
             when (it) {
-                is State.Init -> Toast.makeText(requireContext(), "Init " + it.value, Toast.LENGTH_SHORT).show()
+                is State.Init -> Toast.makeText(requireContext(), "Init", Toast.LENGTH_SHORT).show()
+                is State.Fetched -> Toast.makeText(requireContext(), "Fetched " + it.size, Toast.LENGTH_SHORT).show()
             }
         }
 
-        viewModel.testMe()
+        viewModel.fetchComments()
     }
 }
