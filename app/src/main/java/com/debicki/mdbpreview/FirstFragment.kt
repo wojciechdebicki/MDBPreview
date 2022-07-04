@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.debicki.mdbpreview.databinding.FragmentFirstBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
@@ -34,7 +36,7 @@ class FirstFragment : Fragment() {
 
         viewModel.viewState.observe(viewLifecycleOwner) {
             when (it) {
-                State.Init -> Toast.makeText(requireContext(), "Init", Toast.LENGTH_SHORT).show()
+                is State.Init -> Toast.makeText(requireContext(), "Init " + it.value, Toast.LENGTH_SHORT).show()
             }
         }
 
