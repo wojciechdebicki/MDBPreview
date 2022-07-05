@@ -6,6 +6,6 @@ import javax.inject.Inject
 
 class MovieRepository @Inject constructor(private val omdbService: OMDBService) {
 
-    suspend fun fetch(page: Int = 1): List<Movie> =
-        omdbService.search("blade", page).Search.map { it.toDomain() }
+    suspend fun fetch(query: String, page: Int = 1): List<Movie> =
+        omdbService.search(query, page).Search.map { it.toDomain() }
 }

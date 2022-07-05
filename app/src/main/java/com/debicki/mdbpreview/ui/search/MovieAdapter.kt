@@ -1,10 +1,10 @@
-package com.debicki.mdbpreview
+package com.debicki.mdbpreview.ui.search
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.debicki.mdbpreview.common.ViewGroupExtensions.layoutInflater
 import com.debicki.mdbpreview.databinding.MovieRowBinding
 import com.debicki.mdbpreview.domain.Movie
 
@@ -25,7 +25,7 @@ class MovieAdapter : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(MovieDiffC
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val binding = MovieRowBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = MovieRowBinding.inflate(parent.layoutInflater())
         return MovieViewHolder(binding)
     }
 

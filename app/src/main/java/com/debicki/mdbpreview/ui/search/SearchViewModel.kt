@@ -1,4 +1,4 @@
-package com.debicki.mdbpreview.ui
+package com.debicki.mdbpreview.ui.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,19 +11,20 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 sealed class State {
+    object Init : State()
     object Progress : State()
     data class Fetched(val movies: List<Movie>) : State()
 }
 
 @HiltViewModel
-class FirstViewModel @Inject constructor(private val movieRepository: MovieRepository) : ViewModel() {
-    private val _viewState = MutableLiveData<State>()
+class SearchViewModel @Inject constructor(private val movieRepository: MovieRepository) : ViewModel() {
+    private val _viewState = MutableLiveData<State>(State.Init)
     val viewState: LiveData<State> = _viewState
 
-    fun fetch() {
+    fun onSearch(text: String) {
         viewModelScope.launch {
             _viewState.postValue(State.Progress)
-            val movies = movieRepository.fetch()
+            val movies = movieRepository.fetch(text)
 
             _viewState.postValue(State.Fetched(movies))
         }
