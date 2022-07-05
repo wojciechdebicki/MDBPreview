@@ -3,6 +3,7 @@ package com.debicki.mdbpreview.ui.search
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +17,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.fragment_search) {
     private val binding by viewBinding(FragmentSearchBinding::bind)
     private val viewModel: SearchViewModel by viewModels()
-    private val adapter = MovieAdapter()
+    private val adapter = MovieAdapter {
+        viewModel.onMovieClicked(it)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,6 +46,16 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                     binding.progress.visibility = View.GONE
                     adapter.submitList(it.movies)
                 }
+            }
+        }
+
+        viewModel.effect.observe(viewLifecycleOwner) {
+            when (it) {
+                is Effect.OpenDetailsPage -> Toast.makeText(
+                    requireContext(),
+                    "Goto " + it.movie.title,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

@@ -16,10 +16,12 @@ private class MovieDiffCallback : DiffUtil.ItemCallback<Movie>() {
         oldItem == newItem
 }
 
-class MovieAdapter : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(MovieDiffCallback()) {
+class MovieAdapter(private val onMovieClickListener: (Movie) -> Unit) :
+    ListAdapter<Movie, MovieAdapter.MovieViewHolder>(MovieDiffCallback()) {
 
     inner class MovieViewHolder(private val binding: MovieRowBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: Movie) {
+            binding.root.setOnClickListener { onMovieClickListener.invoke(movie) }
             binding.title.text = movie.title
         }
     }

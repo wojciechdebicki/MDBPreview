@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.debicki.mdbpreview.common.SingleLiveEvent
 import com.debicki.mdbpreview.domain.Movie
 import com.debicki.mdbpreview.network.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,10 +17,17 @@ sealed class State {
     data class Fetched(val movies: List<Movie>) : State()
 }
 
+sealed class Effect {
+    data class OpenDetailsPage(val movie: Movie) : Effect()
+}
+
 @HiltViewModel
 class SearchViewModel @Inject constructor(private val movieRepository: MovieRepository) : ViewModel() {
     private val _viewState = MutableLiveData<State>(State.Init)
     val viewState: LiveData<State> = _viewState
+
+    private val _effect = SingleLiveEvent<Effect>()
+    val effect: LiveData<Effect> = _effect
 
     fun onSearch(text: String) {
         viewModelScope.launch {
@@ -28,6 +36,10 @@ class SearchViewModel @Inject constructor(private val movieRepository: MovieRepo
 
             _viewState.postValue(State.Fetched(movies))
         }
+    }
+
+    fun onMovieClicked(movie: Movie) {
+        _effect.postValue(Effect.OpenDetailsPage(movie))
     }
 
 }
