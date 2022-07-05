@@ -1,6 +1,6 @@
 package com.debicki.mdbpreview.di
 
-import com.debicki.mdbpreview.OMDBService
+import com.debicki.mdbpreview.network.OMDBService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

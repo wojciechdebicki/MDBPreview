@@ -1,4 +1,4 @@
-package com.debicki.mdbpreview
+package com.debicki.mdbpreview.ui
 
 import android.os.Bundle
 import android.view.Menu
@@ -8,6 +8,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.debicki.mdbpreview.R
 import com.debicki.mdbpreview.common.viewBinding
 import com.debicki.mdbpreview.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar

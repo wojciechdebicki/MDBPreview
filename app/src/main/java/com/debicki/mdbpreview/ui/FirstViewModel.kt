@@ -1,9 +1,11 @@
-package com.debicki.mdbpreview
+package com.debicki.mdbpreview.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.debicki.mdbpreview.domain.Movie
+import com.debicki.mdbpreview.network.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,9 +23,9 @@ class FirstViewModel @Inject constructor(private val movieRepository: MovieRepos
     fun fetch() {
         viewModelScope.launch {
             _viewState.postValue(State.Progress)
-            val data = movieRepository.fetch()
+            val movies = movieRepository.fetch()
 
-            _viewState.postValue(State.Fetched(data.Search))
+            _viewState.postValue(State.Fetched(movies))
         }
     }
 

@@ -1,9 +1,10 @@
-package com.debicki.mdbpreview
+package com.debicki.mdbpreview.ui
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.debicki.mdbpreview.R
 import com.debicki.mdbpreview.common.viewBinding
 import com.debicki.mdbpreview.databinding.FragmentSecondBinding
 
