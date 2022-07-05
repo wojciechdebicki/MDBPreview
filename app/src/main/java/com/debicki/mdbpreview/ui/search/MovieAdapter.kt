@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.debicki.mdbpreview.common.ViewGroupExtensions.layoutInflater
 import com.debicki.mdbpreview.databinding.MovieRowBinding
 import com.debicki.mdbpreview.domain.Movie
+import com.squareup.picasso.Picasso
 
 private class MovieDiffCallback : DiffUtil.ItemCallback<Movie>() {
     override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
@@ -23,6 +24,7 @@ class MovieAdapter(private val onMovieClickListener: (Movie) -> Unit) :
         fun bind(movie: Movie) {
             binding.root.setOnClickListener { onMovieClickListener.invoke(movie) }
             binding.title.text = movie.title
+            Picasso.get().load(movie.poster).into(binding.image)
         }
     }
 
