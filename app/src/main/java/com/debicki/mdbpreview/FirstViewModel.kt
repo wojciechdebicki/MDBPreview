@@ -9,8 +9,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 sealed class State {
-    object Init : State()
-    data class Fetched(val size: Int) : State()
+    object Progress : State()
+    data class Fetched(val movies: List<Movie>) : State()
 }
 
 @HiltViewModel
@@ -20,10 +20,10 @@ class FirstViewModel @Inject constructor(private val movieRepository: MovieRepos
 
     fun fetch() {
         viewModelScope.launch {
-            _viewState.postValue(State.Init)
+            _viewState.postValue(State.Progress)
             val data = movieRepository.fetch()
 
-            _viewState.postValue(State.Fetched(data.totalResults))
+            _viewState.postValue(State.Fetched(data.Search))
         }
     }
 
