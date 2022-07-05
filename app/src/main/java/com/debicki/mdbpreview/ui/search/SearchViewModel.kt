@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.debicki.mdbpreview.common.SingleLiveEvent
+import com.debicki.mdbpreview.database.FavoriteMoviesRepository
 import com.debicki.mdbpreview.domain.Movie
 import com.debicki.mdbpreview.network.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +23,10 @@ sealed class Effect {
 }
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val movieRepository: MovieRepository) : ViewModel() {
+class SearchViewModel @Inject constructor(
+    private val movieRepository: MovieRepository,
+    private val favoritesMovieDao: FavoriteMoviesRepository
+) : ViewModel() {
     private val _viewState = MutableLiveData<State>(State.Init)
     val viewState: LiveData<State> = _viewState
 
