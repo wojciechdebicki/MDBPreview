@@ -3,14 +3,15 @@ package com.debicki.mdbpreview.ui.search
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.debicki.mdbpreview.R
 import com.debicki.mdbpreview.common.ViewExtensions.hideKeyboard
 import com.debicki.mdbpreview.common.viewBinding
 import com.debicki.mdbpreview.databinding.FragmentSearchBinding
+import com.debicki.mdbpreview.ui.search.SearchFragmentDirections.Companion.actionSearchFragmentToFavoritesFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -51,11 +52,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         viewModel.effect.observe(viewLifecycleOwner) {
             when (it) {
-                is Effect.OpenDetailsPage -> Toast.makeText(
-                    requireContext(),
-                    "Goto " + it.movie.title,
-                    Toast.LENGTH_SHORT
-                ).show()
+                is Effect.OpenDetailsPage -> {
+                    val directions = actionSearchFragmentToFavoritesFragment(it.movie.imdbID)
+                    findNavController().navigate(directions)
+                }
             }
         }
     }

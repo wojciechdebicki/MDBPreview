@@ -2,6 +2,7 @@ package com.debicki.mdbpreview.ui.favorites
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.debicki.mdbpreview.R
@@ -14,8 +15,13 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //TODO by navArgs()?
+        val movieId = arguments?.getString("movieId") ?: ""
+
+        Toast.makeText(requireContext(), "Passed " + movieId, Toast.LENGTH_SHORT).show()
+
         binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+            findNavController().navigate(R.id.action_FavoritesFragment_to_SearchFragment)
         }
     }
 }
