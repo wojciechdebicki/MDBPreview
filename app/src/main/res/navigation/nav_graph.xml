@@ -6,6 +6,17 @@
     app:startDestination="@id/FavoritesFragment">
 
     <fragment
+        android:id="@+id/FavoritesFragment"
+        android:name="com.debicki.mdbpreview.ui.favorites.FavoritesFragment"
+        android:label="@string/favorites_fragment_label"
+        tools:layout="@layout/fragment_favorites">
+
+        <action
+            android:id="@+id/action_FavoritesFragment_to_SearchFragment"
+            app:destination="@id/SearchFragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/SearchFragment"
         android:name="com.debicki.mdbpreview.ui.search.SearchFragment"
         android:label="@string/search_fragment_label"
@@ -20,6 +31,7 @@
                 app:argType="string" />
         </action>
     </fragment>
+
     <fragment
         android:id="@+id/DetailFragment"
         android:name="com.debicki.mdbpreview.ui.detail.DetailFragment"
@@ -31,14 +43,5 @@
             app:destination="@id/SearchFragment" />
     </fragment>
 
-    <fragment
-        android:id="@+id/FavoritesFragment"
-        android:name="com.debicki.mdbpreview.ui.favorites.FavoritesFragment"
-        android:label="@string/favorites_fragment_label"
-        tools:layout="@layout/fragment_favorites">
 
-        <action
-            android:id="@+id/action_FavoritesFragment_to_SearchFragment"
-            app:destination="@id/SearchFragment" />
-    </fragment>
 </navigation>
