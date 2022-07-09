@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/SearchFragment">
+    app:startDestination="@id/FavoritesFragment">
 
     <fragment
         android:id="@+id/SearchFragment"
@@ -12,14 +12,25 @@
         tools:layout="@layout/fragment_search">
 
         <action
-            android:id="@+id/action_SearchFragment_to_FavoritesFragment"
-            app:destination="@id/FavoritesFragment">
+            android:id="@+id/action_SearchFragment_to_DetailFragment"
+            app:destination="@id/DetailFragment">
             <argument
                 android:name="movieId"
                 android:defaultValue="0"
                 app:argType="string" />
         </action>
     </fragment>
+    <fragment
+        android:id="@+id/DetailFragment"
+        android:name="com.debicki.mdbpreview.ui.detail.DetailFragment"
+        android:label="@string/detail_fragment_label"
+        tools:layout="@layout/fragment_detail">
+
+        <action
+            android:id="@+id/action_DetailFragment_to_SearchFragment"
+            app:destination="@id/SearchFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/FavoritesFragment"
         android:name="com.debicki.mdbpreview.ui.favorites.FavoritesFragment"

@@ -11,10 +11,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed class State {
-    object Init : State()
-    object Progress : State()
-    data class Fetched(val movie: Movie, val isFavorite: Boolean) : State()
+sealed class FavoriteState {
+    object Init : FavoriteState()
+    object Progress : FavoriteState()
+    data class Fetched(val movies: List<Movie>) : FavoriteState()
 }
 
 @HiltViewModel
@@ -22,25 +22,17 @@ class FavoritesViewModel @Inject constructor(
     private val favoritesMovieDao: FavoriteMoviesRepository,
     private val moviesRepository: MovieDatabaseRepository
 ) : ViewModel() {
-    private val _viewState = MutableLiveData<State>(State.Init)
-    val viewState: LiveData<State> = _viewState
+    private val _viewState = MutableLiveData<FavoriteState>(FavoriteState.Init)
+    val viewState: LiveData<FavoriteState> = _viewState
 
-    private lateinit var movie: Movie
-
-    fun fetchData(movieId: String) {
+    fun fetchData() {
         viewModelScope.launch {
-            _viewState.postValue(State.Progress)
+            _viewState.postValue(FavoriteState.Progress)
 
-            movie = moviesRepository.getMovie(movieId)
-            val isFavorite = favoritesMovieDao.isFavorite(movie.imdbID)
+            val favorites = favoritesMovieDao.getAll()
+            val movies = moviesRepository.getAll(favorites)
 
-            _viewState.postValue(State.Fetched(movie, isFavorite))
-        }
-    }
-
-    fun toggle() {
-        viewModelScope.launch {
-            favoritesMovieDao.addMovie(movie)
+            _viewState.postValue(FavoriteState.Fetched(movies))
         }
     }
 }

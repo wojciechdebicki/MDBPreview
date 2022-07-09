@@ -2,6 +2,7 @@
     <string name="app_name">MDBPreview</string>
     <string name="search_fragment_label">Search Fragment</string>
     <string name="favorites_fragment_label">Favorites Fragment</string>
+    <string name="detail_fragment_label">Detail Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 </resources>

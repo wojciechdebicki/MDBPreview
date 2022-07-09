@@ -11,7 +11,6 @@ import com.debicki.mdbpreview.R
 import com.debicki.mdbpreview.common.ViewExtensions.hideKeyboard
 import com.debicki.mdbpreview.common.viewBinding
 import com.debicki.mdbpreview.databinding.FragmentSearchBinding
-import com.debicki.mdbpreview.ui.search.SearchFragmentDirections.Companion.actionSearchFragmentToFavoritesFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -53,7 +52,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         viewModel.effect.observe(viewLifecycleOwner) {
             when (it) {
                 is Effect.OpenDetailsPage -> {
-                    val directions = actionSearchFragmentToFavoritesFragment(it.movie.imdbID)
+                    val directions = SearchFragmentDirections.actionSearchFragmentToDetailFragment(it.movie.imdbID)
                     findNavController().navigate(directions)
                 }
             }

@@ -18,27 +18,16 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //TODO by navArgs()?
-        val movieId = arguments?.getString("movieId") ?: ""
-
         viewModel.viewState.observe(viewLifecycleOwner) {
             when (it) {
-                is State.Fetched -> Toast.makeText(
-                    requireContext(),
-                    it.movie.title + " " + it.isFavorite,
-                    Toast.LENGTH_SHORT
-                ).show()
-                is State.Init -> {
-                }
-                is State.Progress -> {
-                }
+                is FavoriteState.Fetched -> Toast.makeText(requireContext(), "Fetched " + it.movies.size, Toast.LENGTH_SHORT)
+                    .show()
+                is FavoriteState.Init -> Toast.makeText(requireContext(), "Init ", Toast.LENGTH_SHORT)
+                    .show()
+                is FavoriteState.Progress -> {}
             }
         }
 
-        viewModel.fetchData(movieId)
-
-        binding.buttonSecond.setOnClickListener {
-            viewModel.toggle()
-        }
+        viewModel.fetchData()
     }
 }
