@@ -29,4 +29,9 @@ object DatabaseModule {
     fun provideFavoritesMovieDao(database: AppDatabase) =
         database.favoritesMovieDao()
 
+    @Singleton
+    @Provides
+    fun provideMovieDao(database: AppDatabase) =
+        database.movieDao()
+
 }
