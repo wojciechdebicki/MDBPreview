@@ -2,6 +2,8 @@ package com.debicki.mdbpreview.ui.favorites
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -28,14 +30,21 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         viewModel.viewState.observe(viewLifecycleOwner) {
             when (it) {
                 is FavoriteState.Fetched -> {
-                    binding.progress.visibility = View.GONE
+                    binding.progress.visibility = GONE
+                    binding.empty.visibility = GONE
                     adapter.submitList(it.movies)
                 }
                 is FavoriteState.Init -> {
-                    binding.progress.visibility = View.GONE
+                    binding.progress.visibility = GONE
+                    binding.empty.visibility = GONE
                 }
                 is FavoriteState.Progress -> {
-                    binding.progress.visibility = View.VISIBLE
+                    binding.progress.visibility = VISIBLE
+                    binding.empty.visibility = GONE
+                }
+                is FavoriteState.EmptyList -> {
+                    binding.progress.visibility = GONE
+                    binding.empty.visibility = VISIBLE
                 }
             }
         }

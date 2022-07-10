@@ -16,6 +16,7 @@ sealed class FavoriteState {
     object Init : FavoriteState()
     object Progress : FavoriteState()
     data class Fetched(val movies: List<Movie>) : FavoriteState()
+    object EmptyList : FavoriteState()
 }
 
 sealed class FavoriteEffect {
@@ -40,7 +41,13 @@ class FavoritesViewModel @Inject constructor(
             val favorites = favoritesMovieDao.getAll()
             val movies = moviesRepository.getAll(favorites)
 
-            _viewState.postValue(FavoriteState.Fetched(movies))
+            val state = if (movies.isEmpty()) {
+                FavoriteState.EmptyList
+            } else {
+                FavoriteState.Fetched(movies)
+            }
+
+            _viewState.postValue(state)
         }
     }
 

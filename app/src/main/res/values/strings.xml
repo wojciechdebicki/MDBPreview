@@ -5,4 +5,5 @@
     <string name="detail_fragment_label">Detail Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="empty_favs_text">You do not have any favorites movies. \n Search and add them.</string>
 </resources>
