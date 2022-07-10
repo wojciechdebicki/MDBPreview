@@ -24,6 +24,8 @@ class MovieAdapter(private val onMovieClickListener: (Movie) -> Unit) :
         fun bind(movie: Movie) {
             binding.root.setOnClickListener { onMovieClickListener.invoke(movie) }
             binding.title.text = movie.title
+            binding.description.text = "Description"
+            binding.rating.text = "Rating"
             Picasso.get().load(movie.poster).into(binding.image)
         }
     }
