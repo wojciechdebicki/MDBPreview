@@ -4,10 +4,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.debicki.mdbpreview.common.cancelRequest
 import com.debicki.mdbpreview.common.layoutInflater
+import com.debicki.mdbpreview.common.load
 import com.debicki.mdbpreview.databinding.MovieSearchRowBinding
 import com.debicki.mdbpreview.domain.MovieDescription
-import com.squareup.picasso.Picasso
 
 private class MovieSearchDiffCallback : DiffUtil.ItemCallback<MovieDescription>() {
     override fun areItemsTheSame(oldItem: MovieDescription, newItem: MovieDescription): Boolean =
@@ -24,14 +25,16 @@ class MovieSearchAdapter(private val onMovieClickListener: (MovieDescription) ->
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movie: MovieDescription) {
-            binding.root.setOnClickListener { onMovieClickListener.invoke(movie) }
-            binding.title.text = movie.title
-            binding.year.text = movie.year
-            Picasso.get().load(movie.poster).into(binding.image)
+            binding.apply {
+                root.setOnClickListener { onMovieClickListener.invoke(movie) }
+                title.text = movie.title
+                year.text = movie.year
+                image.load(movie.poster)
+            }
         }
 
         fun unbind() {
-            Picasso.get().cancelRequest(binding.image)
+            binding.image.cancelRequest()
             binding.root.setOnClickListener(null)
         }
     }
