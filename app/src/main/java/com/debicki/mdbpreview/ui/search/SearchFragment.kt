@@ -3,6 +3,7 @@ package com.debicki.mdbpreview.ui.search
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -46,6 +47,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                     binding.progress.visibility = View.GONE
                     adapter.submitList(it.movies)
                 }
+                is State.Error -> Toast.makeText(requireContext(), it.error, Toast.LENGTH_SHORT).show()
             }
         }
 

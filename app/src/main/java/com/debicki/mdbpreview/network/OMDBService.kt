@@ -6,6 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface OMDBService {
+
     @GET(".")
     suspend fun search(
         @Query("s") search: String,

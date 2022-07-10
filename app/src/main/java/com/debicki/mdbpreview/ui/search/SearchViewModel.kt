@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.debicki.mdbpreview.common.SingleLiveEvent
 import com.debicki.mdbpreview.domain.MovieDescription
 import com.debicki.mdbpreview.network.MovieNetworkRepository
+import com.debicki.mdbpreview.network.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,6 +15,7 @@ import javax.inject.Inject
 sealed class State {
     object Init : State()
     object Progress : State()
+    data class Error(val error: String) : State()
     data class Fetched(val movies: List<MovieDescription>) : State()
 }
 
@@ -34,9 +36,13 @@ class SearchViewModel @Inject constructor(
     fun onSearch(text: String) {
         viewModelScope.launch {
             _viewState.postValue(State.Progress)
-            val movies = movieNetworkRepository.fetch(text)
 
-            _viewState.postValue(State.Fetched(movies))
+            val state = when (val response = movieNetworkRepository.fetch(text)) {
+                is Response.Error -> State.Error(response.error)
+                is Response.Success -> State.Fetched(response.value)
+            }
+
+            _viewState.postValue(state)
         }
     }
 
