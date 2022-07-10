@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.debicki.mdbpreview.R
 import com.debicki.mdbpreview.common.viewBinding
 import com.debicki.mdbpreview.databinding.FragmentFavoritesBinding
-import com.debicki.mdbpreview.ui.search.MovieAdapter
+import com.debicki.mdbpreview.ui.MovieAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,17 +32,22 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
                 is FavoriteState.Fetched -> {
                     binding.progress.visibility = GONE
                     binding.empty.visibility = GONE
+                    binding.movies.visibility = VISIBLE
                     adapter.submitList(it.movies)
                 }
                 is FavoriteState.Init -> {
                     binding.progress.visibility = GONE
                     binding.empty.visibility = GONE
+                    binding.movies.visibility = GONE
                 }
                 is FavoriteState.Progress -> {
                     binding.progress.visibility = VISIBLE
                     binding.empty.visibility = GONE
+                    binding.movies.visibility = GONE
                 }
                 is FavoriteState.EmptyList -> {
+                    binding.movies.visibility = GONE
+                    adapter.submitList(listOf())
                     binding.progress.visibility = GONE
                     binding.empty.visibility = VISIBLE
                 }

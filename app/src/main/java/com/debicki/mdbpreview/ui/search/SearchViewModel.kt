@@ -5,9 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.debicki.mdbpreview.common.SingleLiveEvent
-import com.debicki.mdbpreview.database.MovieDatabaseRepository
-import com.debicki.mdbpreview.domain.Movie
-import com.debicki.mdbpreview.network.MovieRepository
+import com.debicki.mdbpreview.domain.MovieDescription
+import com.debicki.mdbpreview.network.MovieNetworkRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,17 +14,16 @@ import javax.inject.Inject
 sealed class State {
     object Init : State()
     object Progress : State()
-    data class Fetched(val movies: List<Movie>) : State()
+    data class Fetched(val movies: List<MovieDescription>) : State()
 }
 
 sealed class Effect {
-    data class OpenDetailsPage(val movie: Movie) : Effect()
+    data class OpenDetailsPage(val movie: MovieDescription) : Effect()
 }
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val movieRepository: MovieRepository,
-    private val movieDatabaseRepository: MovieDatabaseRepository
+    private val movieNetworkRepository: MovieNetworkRepository,
 ) : ViewModel() {
     private val _viewState = MutableLiveData<State>(State.Init)
     val viewState: LiveData<State> = _viewState
@@ -36,16 +34,13 @@ class SearchViewModel @Inject constructor(
     fun onSearch(text: String) {
         viewModelScope.launch {
             _viewState.postValue(State.Progress)
-            val movies = movieRepository.fetch(text)
-
-            movieDatabaseRepository.addAll(movies)
+            val movies = movieNetworkRepository.fetch(text)
 
             _viewState.postValue(State.Fetched(movies))
         }
     }
 
-    fun onMovieClicked(movie: Movie) {
-        _effect.postValue(Effect.OpenDetailsPage(movie))
+    fun onMovieClicked(movieDescription: MovieDescription) {
+        _effect.postValue(Effect.OpenDetailsPage(movieDescription))
     }
-
 }

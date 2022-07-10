@@ -13,7 +13,7 @@ class MovieDatabaseRepository @Inject constructor(private val moviesDao: MoviesD
     suspend fun getAll(ids: List<String>) =
         moviesDao.getAll(ids).map { it.toDomain() }
 
-    suspend fun addAll(movies: List<Movie>) = moviesDao.insertAll(movies.map { it.toDatabase() })
+    suspend fun add(movie: Movie) = moviesDao.insert(movie.toDatabase())
 
-    suspend fun getMovie(imdbId: String) = moviesDao.fetch(imdbId).toDomain()
+    suspend fun getMovie(imdbId: String) = moviesDao.fetch(imdbId)?.toDomain()
 }

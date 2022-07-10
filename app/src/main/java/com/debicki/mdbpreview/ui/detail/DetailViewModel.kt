@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.debicki.mdbpreview.database.FavoriteMoviesRepository
 import com.debicki.mdbpreview.database.MovieDatabaseRepository
 import com.debicki.mdbpreview.domain.Movie
+import com.debicki.mdbpreview.network.MovieNetworkRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,8 +20,9 @@ sealed class State {
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val favoritesMovieDao: FavoriteMoviesRepository,
-    private val moviesRepository: MovieDatabaseRepository
+    private val favoriteMoviesRepository: FavoriteMoviesRepository,
+    private val movieDatabaseRepository: MovieDatabaseRepository,
+    private val movieNetworkRepository: MovieNetworkRepository
 ) : ViewModel() {
     private val _viewState = MutableLiveData<State>(State.Init)
     val viewState: LiveData<State> = _viewState
@@ -31,16 +33,27 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             _viewState.postValue(State.Progress)
 
-            movie = moviesRepository.getMovie(movieId)
-            val isFavorite = favoritesMovieDao.isFavorite(movie.imdbID)
+            val tempMovie = movieDatabaseRepository.getMovie(movieId)
+            if (tempMovie == null) {
+                movie = movieNetworkRepository.getDetails(movieId)
+                movieDatabaseRepository.add(movie)
+            } else {
+                movie = tempMovie
+            }
+
+            val isFavorite = favoriteMoviesRepository.isFavorite(movie.imdbID)
 
             _viewState.postValue(State.Fetched(movie, isFavorite))
         }
     }
 
-    fun toggle() {
+    fun favoriteStateChanged(checked: Boolean) {
         viewModelScope.launch {
-            favoritesMovieDao.addMovie(movie)
+            if (checked) {
+                favoriteMoviesRepository.addMovie(movie)
+            } else {
+                favoriteMoviesRepository.remove(movie)
+            }
         }
     }
 }

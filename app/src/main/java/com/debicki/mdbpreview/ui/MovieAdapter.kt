@@ -1,4 +1,4 @@
-package com.debicki.mdbpreview.ui.search
+package com.debicki.mdbpreview.ui
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -24,8 +24,8 @@ class MovieAdapter(private val onMovieClickListener: (Movie) -> Unit) :
         fun bind(movie: Movie) {
             binding.root.setOnClickListener { onMovieClickListener.invoke(movie) }
             binding.title.text = movie.title
-            binding.description.text = "Description"
-            binding.rating.text = "Rating"
+            binding.description.text = movie.plot
+            binding.rating.text = movie.imdbRating
             Picasso.get().load(movie.poster).into(binding.image)
         }
     }

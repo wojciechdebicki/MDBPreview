@@ -15,8 +15,8 @@ interface MoviesDao {
     suspend fun getAll(ids: List<String>): List<MovieDB>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(movies: List<MovieDB>)
+    suspend fun insert(movie: MovieDB)
 
     @Query("SELECT * FROM MovieDB WHERE imdbID=:imdbId")
-    suspend fun fetch(imdbId: String): MovieDB
+    suspend fun fetch(imdbId: String): MovieDB?
 }

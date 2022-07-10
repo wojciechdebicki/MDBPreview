@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.fragment_search) {
     private val binding by viewBinding(FragmentSearchBinding::bind)
     private val viewModel: SearchViewModel by viewModels()
-    private val adapter = MovieAdapter {
+    private val adapter = MovieSearchAdapter {
         viewModel.onMovieClicked(it)
     }
 

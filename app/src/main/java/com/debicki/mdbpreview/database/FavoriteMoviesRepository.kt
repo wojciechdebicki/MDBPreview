@@ -13,4 +13,6 @@ class FavoriteMoviesRepository @Inject constructor(private val favoritesMovieDao
         favoritesMovieDao.getAll().map { it.imdbID }
 
     suspend fun isFavorite(imdb: String) = favoritesMovieDao.count(imdb) > 0
+
+    suspend fun remove(movie: Movie) = favoritesMovieDao.delete(FavoriteMovieDB(movie.imdbID))
 }

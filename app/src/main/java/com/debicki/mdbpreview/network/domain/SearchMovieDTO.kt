@@ -1,6 +1,6 @@
 package com.debicki.mdbpreview.network.domain
 
-data class MovieDTO(
+data class SearchMovieDTO(
     val Title: String,
     val Year: String,
     val imdbID: String,
