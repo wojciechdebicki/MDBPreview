@@ -5,8 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.debicki.mdbpreview.common.SingleLiveEvent
-import com.debicki.mdbpreview.database.FavoriteMoviesRepository
-import com.debicki.mdbpreview.database.MovieDatabaseRepository
+import com.debicki.mdbpreview.domain.FetchFavoriteMoviesUseCase
 import com.debicki.mdbpreview.domain.Movie
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -25,8 +24,7 @@ sealed class FavoriteEffect {
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    private val favoritesMovieDao: FavoriteMoviesRepository,
-    private val moviesRepository: MovieDatabaseRepository
+    private val fetchFavoriteMoviesUseCase: FetchFavoriteMoviesUseCase
 ) : ViewModel() {
     private val _viewState = MutableLiveData<FavoriteState>(FavoriteState.Init)
     val viewState: LiveData<FavoriteState> = _viewState
@@ -38,8 +36,7 @@ class FavoritesViewModel @Inject constructor(
         viewModelScope.launch {
             _viewState.postValue(FavoriteState.Progress)
 
-            val favorites = favoritesMovieDao.getAll()
-            val movies = moviesRepository.getAll(favorites)
+            val movies = fetchFavoriteMoviesUseCase.execute()
 
             val state = if (movies.isEmpty()) {
                 FavoriteState.EmptyList

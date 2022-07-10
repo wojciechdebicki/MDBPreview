@@ -8,9 +8,6 @@ import com.debicki.mdbpreview.database.domain.MovieDB
 
 @Dao
 interface MoviesDao {
-    @Query("SELECT * FROM MovieDB")
-    suspend fun getAll(): List<MovieDB>
-
     @Query("SELECT * FROM MovieDB WHERE imdbID IN (:ids)")
     suspend fun getAll(ids: List<String>): List<MovieDB>
 

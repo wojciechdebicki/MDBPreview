@@ -34,4 +34,8 @@ object DatabaseModule {
     fun provideMovieDao(database: AppDatabase) =
         database.movieDao()
 
+    @Singleton
+    @Provides
+    fun provideNotInterestedMovieDao(database: AppDatabase) =
+        database.notInterestedDao()
 }

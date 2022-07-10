@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.debicki.mdbpreview.database.FavoriteMoviesRepository
-import com.debicki.mdbpreview.database.MovieDatabaseRepository
+import com.debicki.mdbpreview.domain.FetchDetailMovieUseCase
 import com.debicki.mdbpreview.domain.Movie
-import com.debicki.mdbpreview.network.MovieNetworkRepository
+import com.debicki.mdbpreview.domain.ToggleFavoriteUseCase
+import com.debicki.mdbpreview.domain.ToggleNotInterestedUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,14 +15,14 @@ import javax.inject.Inject
 sealed class State {
     object Init : State()
     object Progress : State()
-    data class Fetched(val movie: Movie, val isFavorite: Boolean) : State()
+    data class Fetched(val movie: Movie, val isFavorite: Boolean, val isBlocked: Boolean) : State()
 }
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val favoriteMoviesRepository: FavoriteMoviesRepository,
-    private val movieDatabaseRepository: MovieDatabaseRepository,
-    private val movieNetworkRepository: MovieNetworkRepository
+    private val fetchDetailMovieUseCase: FetchDetailMovieUseCase,
+    private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
+    private val toggleNotInterestedUseCase: ToggleNotInterestedUseCase
 ) : ViewModel() {
     private val _viewState = MutableLiveData<State>(State.Init)
     val viewState: LiveData<State> = _viewState
@@ -33,27 +33,22 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             _viewState.postValue(State.Progress)
 
-            val tempMovie = movieDatabaseRepository.getMovie(movieId)
-            if (tempMovie == null) {
-                movie = movieNetworkRepository.getDetails(movieId)
-                movieDatabaseRepository.add(movie)
-            } else {
-                movie = tempMovie
-            }
+            val data = fetchDetailMovieUseCase.execute(movieId)
+            movie = data.movie
 
-            val isFavorite = favoriteMoviesRepository.isFavorite(movie.imdbID)
-
-            _viewState.postValue(State.Fetched(movie, isFavorite))
+            _viewState.postValue(State.Fetched(movie, data.isFavorite, data.notInterested))
         }
     }
 
     fun favoriteStateChanged(checked: Boolean) {
         viewModelScope.launch {
-            if (checked) {
-                favoriteMoviesRepository.addMovie(movie)
-            } else {
-                favoriteMoviesRepository.remove(movie)
-            }
+            toggleFavoriteUseCase.execute(checked, movie)
+        }
+    }
+
+    fun notInterestedStateChanged(checked: Boolean) {
+        viewModelScope.launch {
+            toggleNotInterestedUseCase.execute(checked, movie)
         }
     }
 }

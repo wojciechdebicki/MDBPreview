@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.debicki.mdbpreview.common.SingleLiveEvent
 import com.debicki.mdbpreview.domain.MovieDescription
-import com.debicki.mdbpreview.network.MovieNetworkRepository
+import com.debicki.mdbpreview.domain.SearchMovieUseCase
 import com.debicki.mdbpreview.network.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ sealed class Effect {
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val movieNetworkRepository: MovieNetworkRepository,
+    private val searchMovieUseCase: SearchMovieUseCase
 ) : ViewModel() {
     private val _viewState = MutableLiveData<State>(State.Init)
     val viewState: LiveData<State> = _viewState
@@ -37,7 +37,7 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             _viewState.postValue(State.Progress)
 
-            val state = when (val response = movieNetworkRepository.fetch(text)) {
+            val state = when (val response = searchMovieUseCase.execute(text)) {
                 is Response.Error -> State.Error(response.error)
                 is Response.Success -> State.Fetched(response.value)
             }

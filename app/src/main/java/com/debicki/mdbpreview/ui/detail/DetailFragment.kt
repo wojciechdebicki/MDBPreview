@@ -46,6 +46,10 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
             viewModel.favoriteStateChanged(checked)
         }
 
+        binding.notInterested.setOnCheckedChangeListener { _, checked ->
+            viewModel.notInterestedStateChanged(checked)
+        }
+
         viewModel.fetchData(movieId)
     }
 
