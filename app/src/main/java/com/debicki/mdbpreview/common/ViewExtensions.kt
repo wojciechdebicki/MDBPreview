@@ -9,4 +9,8 @@ object ViewExtensions {
         val inputMethodManager = context.getSystemService(InputMethodManager::class.java)
         inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
     }
+
+    fun Boolean.toVisibility(): Int {
+        return if (this) View.VISIBLE else View.GONE
+    }
 }

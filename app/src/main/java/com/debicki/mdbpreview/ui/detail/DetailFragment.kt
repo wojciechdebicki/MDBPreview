@@ -3,10 +3,10 @@ package com.debicki.mdbpreview.ui.detail
 import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
-import android.view.View.VISIBLE
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.debicki.mdbpreview.R
+import com.debicki.mdbpreview.common.ViewExtensions.toVisibility
 import com.debicki.mdbpreview.common.viewBinding
 import com.debicki.mdbpreview.databinding.FragmentDetailBinding
 import com.squareup.picasso.Picasso
@@ -30,27 +30,14 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
                     binding.description.text = it.movie.plot
                     binding.favorite.isChecked = it.isFavorite
                     binding.rating.text = getString(R.string.rating_format, it.movie.imdbRating)
-                    binding.title.visibility = VISIBLE
-                    binding.description.visibility = VISIBLE
-                    binding.favorite.visibility = VISIBLE
-                    binding.progress.visibility = GONE
-                    binding.rating.visibility = VISIBLE
+                    updateVisibility(true)
                 }
                 is State.Init -> {
+                    updateVisibility(true)
                     binding.progress.visibility = GONE
-                    binding.title.visibility = GONE
-                    binding.description.visibility = GONE
-                    binding.favorite.visibility = GONE
-                    binding.progress.visibility = GONE
-                    binding.rating.visibility = GONE
                 }
                 is State.Progress -> {
-                    binding.progress.visibility = GONE
-                    binding.title.visibility = GONE
-                    binding.description.visibility = GONE
-                    binding.favorite.visibility = GONE
-                    binding.progress.visibility = VISIBLE
-                    binding.rating.visibility = GONE
+                    updateVisibility(false)
                 }
             }
         }
@@ -60,6 +47,16 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         }
 
         viewModel.fetchData(movieId)
+    }
+
+    private fun updateVisibility(dataReady: Boolean) {
+        binding.title.visibility = dataReady.toVisibility()
+        binding.poster.visibility = dataReady.toVisibility()
+        binding.description.visibility = dataReady.toVisibility()
+        binding.favorite.visibility = dataReady.toVisibility()
+        binding.rating.visibility = dataReady.toVisibility()
+
+        binding.progress.visibility = dataReady.not().toVisibility()
     }
 
     companion object {

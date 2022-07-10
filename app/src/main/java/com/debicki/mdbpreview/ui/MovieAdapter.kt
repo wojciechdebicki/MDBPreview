@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.debicki.mdbpreview.R
 import com.debicki.mdbpreview.common.ViewGroupExtensions.layoutInflater
 import com.debicki.mdbpreview.databinding.MovieRowBinding
 import com.debicki.mdbpreview.domain.Movie
@@ -25,13 +26,13 @@ class MovieAdapter(private val onMovieClickListener: (Movie) -> Unit) :
             binding.root.setOnClickListener { onMovieClickListener.invoke(movie) }
             binding.title.text = movie.title
             binding.description.text = movie.plot
-            binding.rating.text = movie.imdbRating
+            binding.rating.text = itemView.resources.getString(R.string.rating_format, movie.imdbRating)
             Picasso.get().load(movie.poster).into(binding.image)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val binding = MovieRowBinding.inflate(parent.layoutInflater())
+        val binding = MovieRowBinding.inflate(parent.layoutInflater(), parent, false)
         return MovieViewHolder(binding)
     }
 

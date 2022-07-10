@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
     android:padding="12dp">
 
     <ImageView
@@ -24,21 +25,12 @@
         app:layout_constraintTop_toTopOf="@id/image" />
 
     <TextView
-        android:id="@+id/description"
+        android:id="@+id/year"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@id/title"
         app:layout_constraintTop_toBottomOf="@id/title" />
-
-    <TextView
-        android:id="@+id/rating"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@id/description"
-        app:layout_constraintTop_toBottomOf="@id/description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
