@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.debicki.mdbpreview.R
-import com.debicki.mdbpreview.common.ViewGroupExtensions.layoutInflater
+import com.debicki.mdbpreview.common.layoutInflater
 import com.debicki.mdbpreview.databinding.MovieRowBinding
 import com.debicki.mdbpreview.domain.Movie
 import com.squareup.picasso.Picasso
@@ -29,6 +29,11 @@ class MovieAdapter(private val onMovieClickListener: (Movie) -> Unit) :
             binding.rating.text = itemView.resources.getString(R.string.rating_format, movie.imdbRating)
             Picasso.get().load(movie.poster).into(binding.image)
         }
+
+        fun unbind() {
+            Picasso.get().cancelRequest(binding.image)
+            binding.root.setOnClickListener(null)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -38,5 +43,10 @@ class MovieAdapter(private val onMovieClickListener: (Movie) -> Unit) :
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+    override fun onViewRecycled(holder: MovieViewHolder) {
+        super.onViewRecycled(holder)
+        holder.unbind()
     }
 }
