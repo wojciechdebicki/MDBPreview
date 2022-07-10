@@ -10,5 +10,7 @@ class NotInterestedMoviesRepository @Inject constructor(private val notIntereste
 
     suspend fun isBlocked(imdb: String) = notInterestedMovieDao.count(imdb) > 0
 
+    suspend fun clear() = notInterestedMovieDao.clear()
+
     suspend fun remove(movie: Movie) = notInterestedMovieDao.delete(NotInterestedMovieDB(movie.imdbID))
 }

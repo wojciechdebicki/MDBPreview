@@ -6,6 +6,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="favorite_text">Favorite</string>
+    <string name="clear_text">Clear blocklist</string>
     <string name="not_interested_text">Not interested</string>
     <string name="rating_format">imdb rating: %1$s</string>
     <string name="empty_favs_text">You do not have any favorites movies. \nSearch and add them.</string>

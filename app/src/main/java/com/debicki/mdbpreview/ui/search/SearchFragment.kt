@@ -2,6 +2,8 @@ package com.debicki.mdbpreview.ui.search
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -39,15 +41,34 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             false
         }
 
+        binding.clearNotInterested.setOnClickListener {
+            viewModel.clearNotInterested()
+        }
+
         viewModel.viewState.observe(viewLifecycleOwner) {
             when (it) {
-                is State.Init -> binding.progress.visibility = View.GONE
-                is State.Progress -> binding.progress.visibility = View.VISIBLE
-                is State.Fetched -> {
-                    binding.progress.visibility = View.GONE
-                    adapter.submitList(it.movies)
+                is State.Init -> {
+                    binding.progress.visibility = GONE
+                    binding.clearNotInterested.visibility = VISIBLE
+                    binding.movies.visibility = GONE
                 }
-                is State.Error -> Toast.makeText(requireContext(), it.error, Toast.LENGTH_SHORT).show()
+                is State.Progress -> {
+                    binding.progress.visibility = VISIBLE
+                    binding.clearNotInterested.visibility = GONE
+                    binding.movies.visibility = GONE
+                }
+                is State.Fetched -> {
+                    binding.progress.visibility = GONE
+                    binding.clearNotInterested.visibility = GONE
+                    adapter.submitList(it.movies)
+                    binding.movies.visibility = VISIBLE
+                }
+                is State.Error -> {
+                    binding.progress.visibility = GONE
+                    binding.clearNotInterested.visibility = GONE
+                    binding.movies.visibility = GONE
+                    Toast.makeText(requireContext(), it.error, Toast.LENGTH_SHORT).show()
+                }
             }
         }
 

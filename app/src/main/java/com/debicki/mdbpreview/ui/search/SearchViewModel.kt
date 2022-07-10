@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.debicki.mdbpreview.common.SingleLiveEvent
+import com.debicki.mdbpreview.domain.ClearNotInterestedUseCase
 import com.debicki.mdbpreview.domain.MovieDescription
 import com.debicki.mdbpreview.domain.SearchMovieUseCase
 import com.debicki.mdbpreview.network.Response
@@ -25,7 +26,8 @@ sealed class Effect {
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val searchMovieUseCase: SearchMovieUseCase
+    private val searchMovieUseCase: SearchMovieUseCase,
+    private val clearNotInterestedUseCase: ClearNotInterestedUseCase
 ) : ViewModel() {
     private val _viewState = MutableLiveData<State>(State.Init)
     val viewState: LiveData<State> = _viewState
@@ -33,11 +35,11 @@ class SearchViewModel @Inject constructor(
     private val _effect = SingleLiveEvent<Effect>()
     val effect: LiveData<Effect> = _effect
 
-    fun onSearch(text: String) {
+    fun onSearch(query: String) {
         viewModelScope.launch {
             _viewState.postValue(State.Progress)
 
-            val state = when (val response = searchMovieUseCase.execute(text)) {
+            val state = when (val response = searchMovieUseCase.execute(query)) {
                 is Response.Error -> State.Error(response.error)
                 is Response.Success -> State.Fetched(response.value)
             }
@@ -48,5 +50,11 @@ class SearchViewModel @Inject constructor(
 
     fun onMovieClicked(movieDescription: MovieDescription) {
         _effect.postValue(Effect.OpenDetailsPage(movieDescription))
+    }
+
+    fun clearNotInterested() {
+        viewModelScope.launch {
+            clearNotInterestedUseCase.execute()
+        }
     }
 }
