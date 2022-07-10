@@ -12,8 +12,13 @@
         tools:layout="@layout/fragment_favorites">
 
         <action
-            android:id="@+id/action_FavoritesFragment_to_SearchFragment"
-            app:destination="@id/SearchFragment" />
+            android:id="@+id/to_DetailFragment"
+            app:destination="@id/DetailFragment">
+            <argument
+                android:name="movieId"
+                android:defaultValue="0"
+                app:argType="string" />
+        </action>
     </fragment>
 
     <fragment
@@ -23,7 +28,7 @@
         tools:layout="@layout/fragment_search">
 
         <action
-            android:id="@+id/action_SearchFragment_to_DetailFragment"
+            android:id="@+id/to_DetailFragment"
             app:destination="@id/DetailFragment">
             <argument
                 android:name="movieId"

@@ -1,6 +1,8 @@
 package com.debicki.mdbpreview.ui
 
 import android.os.Bundle
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -27,6 +29,14 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNavView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val bottomNav = binding.bottomNavView
+            when (destination.id) {
+                R.id.FavoritesFragment, R.id.SearchFragment -> bottomNav.visibility = VISIBLE
+                else -> bottomNav.visibility = GONE
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -52,7 +52,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         viewModel.effect.observe(viewLifecycleOwner) {
             when (it) {
                 is Effect.OpenDetailsPage -> {
-                    val directions = SearchFragmentDirections.actionSearchFragmentToDetailFragment(it.movie.imdbID)
+                    val directions = SearchFragmentDirections.toDetailFragment(it.movie.imdbID)
                     findNavController().navigate(directions)
                 }
             }
