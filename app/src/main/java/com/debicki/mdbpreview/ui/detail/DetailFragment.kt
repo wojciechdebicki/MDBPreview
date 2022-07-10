@@ -29,10 +29,12 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
                     binding.title.text = it.movie.title
                     binding.description.text = it.movie.plot
                     binding.favorite.isChecked = it.isFavorite
+                    binding.rating.text = getString(R.string.rating_format, it.movie.imdbRating)
                     binding.title.visibility = VISIBLE
                     binding.description.visibility = VISIBLE
                     binding.favorite.visibility = VISIBLE
                     binding.progress.visibility = GONE
+                    binding.rating.visibility = VISIBLE
                 }
                 is State.Init -> {
                     binding.progress.visibility = GONE
@@ -40,6 +42,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
                     binding.description.visibility = GONE
                     binding.favorite.visibility = GONE
                     binding.progress.visibility = GONE
+                    binding.rating.visibility = GONE
                 }
                 is State.Progress -> {
                     binding.progress.visibility = GONE
@@ -47,6 +50,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
                     binding.description.visibility = GONE
                     binding.favorite.visibility = GONE
                     binding.progress.visibility = VISIBLE
+                    binding.rating.visibility = GONE
                 }
             }
         }
